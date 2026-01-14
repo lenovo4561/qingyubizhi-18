@@ -1,0 +1,30 @@
+<template>
+  <div class="wrapper">
+    <text class="title">我的</text>
+  </div>
+</template>
+
+<script>
+export default {
+  private: {
+    title: '我的'
+  },
+
+  onInit() {
+    console.log('Mine page initialized')
+  }
+}
+</script>
+
+<style lang="scss">
+@import './../../assets/styles/style.scss';
+
+.wrapper {
+  @include flex-box-mixins(column, center, center);
+  .title {
+    font-size: 18 * $size-factor;
+    text-align: center;
+    color: $black;
+  }
+}
+</style>

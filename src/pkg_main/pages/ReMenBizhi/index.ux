@@ -7,7 +7,7 @@
         <div class="back-area" onclick="goBack">
           <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
         </div>
-        <image class="title-img" src="/pkg_main/assets/img/zxbz.png"></image>
+        <image class="title-img" src="/pkg_main/assets/img/paihangicon.png"></image>
       </div>
     </div>
 
@@ -33,7 +33,7 @@ export default {
   data: {
     wallpaperList: Array.from({ length: 20 }, (_, i) => ({
       isCollected: false,
-      src: `https://cdn.shijinzhuang.com/quick/qybz/bz/zx/${i + 1}.jpg`
+      src: `https://cdn.shijinzhuang.com/quick/qybz/bz/rm/${i + 1}.jpg`
     }))
   },
   goBack() {

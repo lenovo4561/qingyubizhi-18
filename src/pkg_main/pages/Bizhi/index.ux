@@ -7,7 +7,7 @@
 
     <!-- 热门与最新 -->
     <div class="hot-new-section">
-      <image class="hot-new-item" src="/pkg_main/assets/img/remen.png"></image>
+      <image class="hot-new-item" onclick="openReMen" src="/pkg_main/assets/img/remen.png"></image>
       <div style="width: 9px;"></div>
       <image class="hot-new-item" src="/pkg_main/assets/img/zuixin.png" onclick="openZuixin"></image>
     </div>
@@ -49,101 +49,44 @@ import media from '@system.media'
 
 export default {
   data: {
-    currentCategoryIndex: 1,
+    currentCategoryIndex: 0,
     categoryList: [
-      { name: '动漫', unselectedImage: '/pkg_main/assets/img/DONGMAN-u.png', selectedImage: '/pkg_main/assets/img/DONGMAN-s.png', unselectedNameImage: '/pkg_main/assets/img/dm.png', selectedNameImage: '/pkg_main/assets/img/dm-1.png' },
-      { name: '人物', unselectedImage: '/pkg_main/assets/img/RENWU-u.png', selectedImage: '/pkg_main/assets/img/RENWU-s.png', unselectedNameImage: '/pkg_main/assets/img/rw.png', selectedNameImage: '/pkg_main/assets/img/rw-1.png' },
-      { name: '萌宠', unselectedImage: '/pkg_main/assets/img/CHOONG-u.png', selectedImage: '/pkg_main/assets/img/CHOONG-s.png', unselectedNameImage: '/pkg_main/assets/img/mc.png', selectedNameImage: '/pkg_main/assets/img/mc-1.png' },
-      { name: '自然', unselectedImage: '/pkg_main/assets/img/ZIRAN-u.png', selectedImage: '/pkg_main/assets/img/ZIRAN-s.png', unselectedNameImage: '/pkg_main/assets/img/zr.png', selectedNameImage: '/pkg_main/assets/img/zr-1.png' }
+      { name: '动漫', unselectedImage: '/pkg_main/assets/img/DONGMAN-u.png', selectedImage: '/pkg_main/assets/img/DONGMAN-s.png', unselectedNameImage: '/pkg_main/assets/img/dm.png', selectedNameImage: '/pkg_main/assets/img/dm-1.png', prefix: 'dm' },
+      { name: '人物', unselectedImage: '/pkg_main/assets/img/RENWU-u.png', selectedImage: '/pkg_main/assets/img/RENWU-s.png', unselectedNameImage: '/pkg_main/assets/img/rw.png', selectedNameImage: '/pkg_main/assets/img/rw-1.png', prefix: 'rw' },
+      { name: '萌宠', unselectedImage: '/pkg_main/assets/img/CHOONG-u.png', selectedImage: '/pkg_main/assets/img/CHOONG-s.png', unselectedNameImage: '/pkg_main/assets/img/mc.png', selectedNameImage: '/pkg_main/assets/img/mc-1.png', prefix: 'mc' },
+      { name: '自然', unselectedImage: '/pkg_main/assets/img/ZIRAN-u.png', selectedImage: '/pkg_main/assets/img/ZIRAN-s.png', unselectedNameImage: '/pkg_main/assets/img/zr.png', selectedNameImage: '/pkg_main/assets/img/zr-1.png', prefix: 'zr' }
     ],
-    wallpaperList: [
-      {
+    wallpaperList: [],
+    allWallpapers: {
+      dm: Array.from({ length: 20 }, (_, i) => ({
         isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/1.jpg'
-      },
-      {
+        src: `https://cdn.shijinzhuang.com/quick/qybz/bz/dm/${i + 1}.jpg`
+      })),
+      rw: Array.from({ length: 20 }, (_, i) => ({
         isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/2.jpg'
-      },
-      {
+        src: `https://cdn.shijinzhuang.com/quick/qybz/bz/rw/${i + 1}.jpg`
+      })),
+      mc: Array.from({ length: 20 }, (_, i) => ({
         isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/3.jpg'
-      },
-      {
+        src: `https://cdn.shijinzhuang.com/quick/qybz/bz/mc/${i + 1}.jpg`
+      })),
+      zr: Array.from({ length: 20 }, (_, i) => ({
         isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/4.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/5.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/6.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/7.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/8.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/9.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/10.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/11.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/12.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/13.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/14.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/15.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/16.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/17.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/18.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/19.jpg'
-      },
-      {
-        isCollected: false,
-        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/20.jpg'
-      }
-    ]
+        src: `https://cdn.shijinzhuang.com/quick/qybz/bz/zr/${i + 1}.jpg`
+      }))
+    }
   },
   onInit() {
+    this.loadWallpapers(0)
     this.loadCollectionStatus()
   },
   onShow() {
     console.log('Bizhi page onShow')
+    this.loadCollectionStatus()
+  },
+  loadWallpapers(index) {
+    const prefix = this.categoryList[index].prefix
+    this.wallpaperList = this.allWallpapers[prefix]
     this.loadCollectionStatus()
   },
   loadCollectionStatus() {
@@ -198,7 +141,7 @@ export default {
     this.currentCategoryIndex = index
     const categoryName = this.categoryList[index].name
     console.log('Selected category:', categoryName)
-    // 这里可以根据分类加载对应的壁纸数据
+    this.loadWallpapers(index)
   },
   openDetail(item) {
     storage.set({ key: 'bizhi_current_src', value: item.src })
@@ -207,6 +150,11 @@ export default {
       params: {
         src: item.src
       }
+    })
+  },
+  openReMen() {
+    router.push({
+      uri: '/pkg_main/pages/ReMenBizhi'
     })
   },
   openZuixin() {

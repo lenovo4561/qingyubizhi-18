@@ -26,28 +26,9 @@ import router from '@system.router'
 
 export default {
   data: {
-    wallpaperList: [
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/1.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/2.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/3.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/4.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/5.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/6.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/7.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/8.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/9.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/10.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/11.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/12.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/13.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/14.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/15.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/16.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/17.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/18.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/19.jpg' },
-      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/20.jpg' }
-    ]
+    wallpaperList: Array.from({ length: 30 }, (_, i) => ({
+      src: `https://cdn.shijinzhuang.com/quick/qybz/ph/${i + 1}.jpg`
+    }))
   },
   onInit() {
     console.log('Paihang page initialized')

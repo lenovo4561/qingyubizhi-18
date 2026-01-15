@@ -32,6 +32,7 @@
       "pkg_main/pages/Demo": { "component": "index" },
       "pkg_main/pages/Detail": { "component": "index" },
       "pkg_main/pages/ZuixinBizhi": { "component": "index" },
+      "pkg_main/pages/ReMenBizhi": { "component": "index" },
       "pkg_main/pages/DemoDetail": { "component": "index" }
     }
   },
@@ -47,6 +48,7 @@
       "pkg_main/pages/Web": { "titleBarText": "详情", "menu": false },
       "pkg_main/pages/Detail": { "titleBar": false, "menu": false },
       "pkg_main/pages/ZuixinBizhi": { "titleBar": false, "menu": false },
+      "pkg_main/pages/ReMenBizhi": { "titleBar": false, "menu": false },
       "pkg_main/pages/Paihang": { "titleBarText": "排行", "menu": false },
       "pkg_main/pages/Shoucang": { "titleBar": false, "menu": false },
       "pkg_main/pages/Mine": { "titleBarText": "我的", "menu": false },

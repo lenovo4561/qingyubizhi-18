@@ -1,0 +1,303 @@
+<template>
+  <div class="page">
+    <image class="wallpaper-img" src="{{src}}"></image>
+    
+    <div class="back-area" onclick="goBack">
+      <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
+    </div>
+
+    <div class="footer">
+      <div class="btn collect-btn" onclick="toggleCollect">
+        <image class="btn-text-img" src="/pkg_main/assets/img/sc.png"></image>
+        <image class="btn-icon-img" src="/pkg_main/assets/img/like-s.png"></image>
+      </div>
+      <div class="btn download-btn" onclick="downloadImage">
+        <image class="btn-text-img" src="/pkg_main/assets/img/xz.png"></image>
+        <image class="btn-icon-img" src="/pkg_main/assets/img/xiazai.png"></image>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+import storage from '@system.storage'
+import prompt from '@system.prompt'
+import request from '@system.request'
+import media from '@system.media'
+
+export default {
+  public: {
+    src: ''
+  },
+  private: {
+    isCollected: false
+  },
+  onInit() {
+    console.log('Detail page onInit, src:', this.src)
+    if (!this.src) {
+      this.loadSrcFromStorage()
+    } else {
+      this.checkCollectionStatus()
+    }
+  },
+  onShow() {
+    console.log('Detail page onShow, src:', this.src)
+    if (!this.src) {
+      this.loadSrcFromStorage()
+    } else {
+      this.checkCollectionStatus()
+    }
+  },
+  goBack() {
+    router.back()
+  },
+  loadSrcFromStorage() {
+    storage.get({
+      key: 'bizhi_current_src',
+      success: data => {
+        const val = data && data.value ? data.value : data
+        if (val) {
+          this.src = val
+          console.log('Detail loaded src from storage:', this.src)
+        } else {
+          console.warn('Detail storage src empty')
+        }
+        this.checkCollectionStatus()
+      },
+      fail: () => {
+        console.warn('Detail load src from storage failed')
+        this.checkCollectionStatus()
+      }
+    })
+  },
+  checkCollectionStatus() {
+    console.log('checkCollectionStatus, src:', this.src)
+    const self = this
+    storage.get({
+      key: 'bizhi_collections',
+      success: function(data) {
+        console.log('Detail checkCollectionStatus raw data:', JSON.stringify(data))
+        let collections = []
+        try {
+          if (typeof data === 'string' && data.trim()) {
+            collections = JSON.parse(data)
+          }
+        } catch (e) {
+          collections = []
+        }
+        collections = Array.isArray(collections) ? collections : []
+        const existingIndex = collections.findIndex(c => c.src === self.src)
+        self.isCollected = existingIndex !== -1
+        console.log('isCollected:', self.isCollected)
+      }
+    })
+  },
+  toggleCollect() {
+    console.log('toggleCollect called, this.src:', this.src)
+    
+    if (!this.src) {
+      console.warn('No src available for collection')
+      return
+    }
+    
+    // 切换收藏状态
+    this.isCollected = !this.isCollected
+    console.log('Toggled isCollected to:', this.isCollected)
+    
+    // 更新存储
+    this.updateCollectionInStorage(this.src, this.isCollected)
+    
+    // 显示提示
+    const message = this.isCollected ? '收藏成功！' : '取消收藏'
+    prompt.showToast({ message: message })
+  },
+  updateCollectionInStorage(src, isCollected) {
+    console.log('updateCollectionInStorage called, src:', src, 'isCollected:', isCollected)
+    const self = this
+    storage.get({
+      key: 'bizhi_collections',
+      success: function(data) {
+        console.log('Storage get raw data:', JSON.stringify(data))
+        let collections = []
+        try {
+          if (typeof data === 'string' && data.trim()) {
+            collections = JSON.parse(data)
+          }
+        } catch (e) {
+          console.error('Parse error:', e)
+          collections = []
+        }
+        collections = Array.isArray(collections) ? collections : []
+        
+        console.log('Current collections count:', collections.length)
+        const existingIndex = collections.findIndex(c => c.src === src)
+        console.log('Existing index:', existingIndex)
+        
+        if (isCollected) {
+          if (existingIndex === -1) {
+            collections.push({ src: src, type: 'bizhi' })
+            console.log('Added to collections, new count:', collections.length)
+          }
+        } else {
+          if (existingIndex !== -1) {
+            collections.splice(existingIndex, 1)
+            console.log('Removed from collections, new count:', collections.length)
+          }
+        }
+
+        const valueToSave = JSON.stringify(collections)
+        console.log('About to save:', valueToSave)
+        storage.set({
+          key: 'bizhi_collections',
+          value: valueToSave,
+          success: function() {
+            console.log('✅ Collection saved successfully, total:', collections.length)
+          },
+          fail: function(data, code) {
+            console.error('❌ Failed to save collection:', data, code)
+          }
+        })
+      },
+      fail: function(data, code) {
+        console.log('Storage get failed, creating new:', data, code)
+        // 如果读取失败，直接创建新的收藏列表
+        if (isCollected) {
+          storage.set({
+            key: 'bizhi_collections',
+            value: JSON.stringify([{ src: src, type: 'bizhi' }]),
+            success: function() {
+              console.log('✅ New collection created')
+            },
+            fail: function(data, code) {
+              console.error('❌ Failed to create collection:', data, code)
+            }
+          })
+        }
+      }
+    })
+  },
+  downloadImage() {
+    if (!this.src) return
+
+    prompt.showToast({ message: '开始下载...' })
+
+    const encodedUrl = this.src.replace(/\s/g, '%20')
+
+    request.download({
+      url: encodedUrl,
+      success: data => {
+        console.info('Download success:', data.token)
+        request.onDownloadComplete({
+          token: data.token,
+          success: ret => {
+            console.info('Download complete, path:', ret.uri)
+
+            media.saveToPhotosAlbum({
+              uri: ret.uri,
+              success: () => {
+                prompt.showToast({ message: '保存成功' })
+              },
+              fail: (data, code) => {
+                console.error('Save to album failed:', data, code)
+                prompt.showToast({ message: '保存失败，请检查权限' })
+              }
+            })
+          },
+          fail: (data, code) => {
+            console.error('Download complete check failed:', data, code)
+            prompt.showToast({ message: '下载失败' })
+          }
+        })
+      },
+      fail: (data, code) => {
+        console.error('Download request failed:', data, code)
+        prompt.showToast({ message: '下载请求失败' })
+      }
+    })
+  }
+}
+</script>
+
+<style>
+.page {
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+}
+
+.wallpaper-img {
+  width: 100%;
+  height: 100%;
+  resize-mode: cover;
+}
+
+.back-area {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+}
+
+.back-icon {
+  width: 10px;
+  height: 10px;
+  resize-mode: contain;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 10px;
+  align-items: center;
+}
+
+.btn {
+  width: 190px;
+  height: 35px;
+  border-radius: 20px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.collect-btn {
+  background-color: #FF66FF;
+}
+
+.download-btn {
+  background-color: #AAFF00;
+   margin-left:10px
+}
+
+.btn-text {
+  font-size: 14px;
+  color: #000000;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.btn-text-img {
+  width: 30px;
+  height: 16px;
+  resize-mode: contain;
+  margin-right: 8px;
+}
+
+.btn-icon-img {
+  width: 16px;
+  height: 16px;
+  resize-mode: contain;
+}
+</style>

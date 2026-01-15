@@ -1,22 +1,6 @@
-<!-- 
-  Copyright (c) 2021-present, the hapjs-platform Project Contributors
-  SPDX-License-Identifier: Apache-2.0
--->
-
 <script>
-/**
- * 应用级别的配置，供所有页面公用
- */
-
-const $utils = require('./helper/utils').default
-const $apis = require('./helper/apis').default
-
-/* @desc: 注入方法至全局 global,以便页面调用 */
-const hook2global = global.__proto__ || global
-hook2global.$utils = $utils
-hook2global.$apis = $apis
-
-export default {
-  onCreate() {}
-}
+const h=global.__proto__||global
+h.$utils=require('./pkg_main/helper/utils').default
+h.$apis=require('./pkg_main/helper/apis').default
+export default{onCreate(){}}
 </script>

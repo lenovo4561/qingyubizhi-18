@@ -1,0 +1,171 @@
+<template>
+  <div class="page">
+    <!-- 顶部区域 -->
+    <div class="top-section">
+      <image class="top-bg" src="/pkg_main/assets/img/zuixinbizhi-bg.png"></image>
+      <div class="header">
+        <div class="back-area" onclick="goBack">
+          <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
+        </div>
+        <image class="title-img" src="/pkg_main/assets/img/zxbz.png"></image>
+      </div>
+    </div>
+
+    <!-- 壁纸列表 -->
+    <list class="wallpaper-list" columns="2">
+      <list-item
+        class="wallpaper-item"
+        for="{{(index, item) in wallpaperList}}"
+        type="wallpaper"
+      >
+        <div class="wallpaper-card" onclick="openDetail(item)">
+          <image class="wallpaper-image" src="{{item.src}}"></image>
+        </div>
+      </list-item>
+    </list>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  data: {
+    wallpaperList: [
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/1.jpg'
+      },
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/2.jpg'
+      },
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/3.jpg'
+      },
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/4.jpg'
+      },
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/5.jpg'
+      },
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/6.jpg'
+      },
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/7.jpg'
+      },
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/8.jpg'
+      },
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/9.jpg'
+      },
+      {
+        isCollected: false,
+        src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/10.jpg'
+      }
+    ]
+  },
+  goBack() {
+    router.back()
+  },
+  openDetail(item) {
+    router.push({
+      uri: '/pkg_main/pages/Detail',
+      params: {
+        src: item.src
+      }
+    })
+  }
+}
+</script>
+
+<style>
+.page {
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.top-section {
+  width: 100%;
+  height: 115px;
+  position: relative;
+}
+
+.top-bg {
+  width: 100%;
+  height: 100%;
+  resize-mode: stretch;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 8px 10px 0 10px;
+  padding-top:20px
+}
+
+.back-area {
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+.back-icon {
+  width: 12px;
+  height: 12px;
+  resize-mode: contain;
+}
+
+.title-img {
+  width: 60px;
+  height: 20px;
+  margin-left: 70px;
+  resize-mode: contain;
+}
+
+.wallpaper-list {
+  padding: 0 5px;
+  flex: 1;
+  height: 100%;
+  margin-top: -55px;
+}
+
+.wallpaper-item {
+  flex-direction: column;
+  padding: 2px;
+}
+
+.wallpaper-card {
+  width: 100%;
+  height: 148px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  position: relative;
+}
+
+.wallpaper-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  resize-mode: cover;
+}
+</style>

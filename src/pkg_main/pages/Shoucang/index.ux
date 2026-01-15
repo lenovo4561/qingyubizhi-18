@@ -1,0 +1,203 @@
+<template>
+  <div class="shoucang-page">
+    <div class="header-box">
+      <image class="header-bg" src="/pkg_main/assets/img/shoucang-bg.png"></image>
+    </div>
+    
+    <!-- 暂无收藏 -->
+    <div class="empty-container" if="{{isEmpty}}">
+       <image class="empty-img" src="/pkg_main/assets/img/zanwu.png"></image>
+       <text class="empty-text">暂无收藏~</text>
+    </div>
+
+    <!-- 收藏列表 - 瀑布流 -->
+    <list class="waterfall-container" if="{{!isEmpty}}">
+      <list-item type="waterfall-row" for="{{(rowIndex, row) in waterfallRows}}">
+        <div class="waterfall-row">
+          <div class="waterfall-column">
+            <div class="waterfall-item" if="{{row.left}}" onclick="openDetail(row.left)">
+              <image class="waterfall-img" src="{{row.left.src}}"></image>
+            </div>
+          </div>
+          <div class="waterfall-column">
+            <div class="waterfall-item" if="{{row.right}}" onclick="openDetail(row.right)">
+              <image class="waterfall-img" src="{{row.right.src}}"></image>
+            </div>
+          </div>
+        </div>
+      </list-item>
+    </list>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+import storage from '@system.storage'
+
+export default {
+  data: {
+    isEmpty: true,
+    collectionList: [],
+    waterfallRows: []
+  },
+
+  onInit() {
+    console.log('Shoucang page onInit')
+    this.loadCollections()
+  },
+
+  onShow() {
+    console.log('Shoucang page onShow')
+    this.loadCollections()
+  },
+
+  refresh() {
+    console.log('🔄 Shoucang page refresh called')
+    this.loadCollections()
+  },
+
+  loadCollections() {
+    console.log('📖 Loading collections from storage')
+    const self = this
+    storage.get({
+      key: 'bizhi_collections',
+      success: function(data) {
+        console.log('📖 Storage get success, raw data:', JSON.stringify(data))
+        let collections = []
+        try {
+          if (typeof data === 'string' && data.trim()) {
+            collections = JSON.parse(data)
+          } else if (data === null || data === undefined || data === '') {
+            collections = []
+          }
+        } catch (e) {
+          console.error('📖 Parse collections error:', e)
+          collections = []
+        }
+
+        console.log('📖 Parsed collections:', JSON.stringify(collections))
+        self.collectionList = Array.isArray(collections) ? collections : []
+        self.isEmpty = self.collectionList.length === 0
+        console.log('📖 Final count:', self.collectionList.length, 'isEmpty:', self.isEmpty)
+        
+        // 分配到左右两列（瀑布流布局）
+        if (!self.isEmpty) {
+          self.distributeToRows()
+        }
+      },
+      fail: function(data, code) {
+        console.log('📖 Get collections failed:', data, code)
+        self.collectionList = []
+        self.isEmpty = true
+        self.waterfallRows = []
+      }
+    })
+  },
+
+  distributeToRows() {
+    // 将数据按行分配，每行包含左右两个项目
+    this.waterfallRows = []
+    
+    for (let i = 0; i < this.collectionList.length; i += 2) {
+      const row = {
+        left: this.collectionList[i],
+        right: this.collectionList[i + 1] || null
+      }
+      this.waterfallRows.push(row)
+    }
+    
+    console.log('📊 Distributed rows:', this.waterfallRows.length)
+  },
+
+  openDetail(item) {
+    if (!item) return
+    storage.set({ key: 'bizhi_current_src', value: item.src })
+    router.push({
+      uri: '/pkg_main/pages/Detail',
+      params: {
+        src: item.src
+      }
+    })
+  }
+}
+</script>
+
+<style lang="scss">
+@import './../../assets/styles/style.scss';
+
+.shoucang-page {
+  flex-direction: column;
+  background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+}
+
+.header-box {
+  width: 100%;
+  height: 190px; 
+  .header-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* 空状态样式 */
+.empty-container {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  padding: 50px 0;
+  background-color: #f5f5f5;
+  
+  .empty-img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+  }
+  
+  .empty-text {
+    margin-top: 8px;
+    color: #cccccc;
+    font-size: 10px;
+  }
+}
+
+/* 瀑布流容器 */
+.waterfall-container {
+  width: 100%;
+  flex: 1;
+  margin-top: -60px;
+}
+
+/* 瀑布流行 */
+.waterfall-row {
+  flex-direction: row;
+  width: 100%;
+  padding: 0 8px;
+}
+
+/* 瀑布流列 */
+.waterfall-column {
+  flex-direction: column;
+  flex: 1;
+  padding: 0 4px;
+}
+
+/* 瀑布流项目 */
+.waterfall-item {
+  width: 100%;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+}
+
+.waterfall-img {
+  width: 100%;
+  height: 148px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+</style>

@@ -2,6 +2,12 @@ node_modules
 build
 dist
 
+# Temporary files
+temp_*/
+
+# Sign files
+sign/
+
 .DS_Store
 Thumbs.db
 

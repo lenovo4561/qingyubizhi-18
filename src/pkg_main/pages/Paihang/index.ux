@@ -1,0 +1,167 @@
+<template>
+  <div class="page">
+    <div class="header">
+      <image class="header-bg" src="/pkg_main/assets/img/paihang-bg.png"></image>
+      <div class="back-area" onclick="goBack">
+        <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
+      </div>
+    </div>
+
+    <list class="list" columns="2">
+      <list-item class="list-item" type="wallpaper" for="{{(index, item) in wallpaperList}}">
+        <div class="card" onclick="openDetail(item)">
+          <image class="wallpaper-img" src="{{item.src}}"></image>
+          <stack class="rank-badge" if="{{index < 3}}">
+            <image class="rank-bg" src="{{'/pkg_main/assets/img/' + (index + 1) + '.png'}}"></image>
+            <text class="rank-num">{{index + 1}}</text>
+          </stack>
+        </div>
+      </list-item>
+    </list>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  data: {
+    wallpaperList: [
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/1.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/2.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/3.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/4.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/5.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/6.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/7.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/8.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/9.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/10.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/11.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/12.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/13.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/14.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/15.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/16.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/17.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/18.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/19.jpg' },
+      { src: 'https://cdn.shijinzhuang.com/huayang/bz/sjbz/zx/20.jpg' }
+    ]
+  },
+  onInit() {
+    console.log('Paihang page initialized')
+  },
+  goBack() {
+    router.back()
+  },
+  openDetail(item) {
+    router.push({
+      uri: '/pkg_main/pages/Detail',
+      params: {
+        src: item.src
+      }
+    })
+  }
+}
+</script>
+
+<style>
+.page {
+  flex-direction: column;
+  background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  width: 100%;
+  height: 127px;
+  position: relative;
+}
+
+.header-bg {
+  width: 100%;
+  height: 100%;
+  resize-mode: cover;
+}
+
+.back-area {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+}
+
+.back-icon {
+  width: 12px;
+  height: 12px;
+  resize-mode: contain;
+}
+
+.header-content {
+  position: absolute;
+  top: 50px;
+  left: 20px;
+}
+
+.header-title {
+  width: 120px;
+  height: 40px;
+  resize-mode: contain;
+}
+
+.list {
+  flex: 1;
+  padding: 0 5px;
+}
+
+.list-item {
+  flex-direction: column;
+  padding: 5px;
+}
+
+.card {
+  width: 100%;
+  height: 148px;
+  border-radius: 5px;
+  position: relative;
+  background-color: #f0f0f0;
+}
+
+.wallpaper-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  resize-mode: cover;
+}
+
+.rank-badge {
+  position: absolute;
+  top: 0;
+  right: 2px;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank-bg {
+  width: 100%;
+  height: 100%;
+  resize-mode: contain;
+}
+
+.rank-num {
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: bold;
+  margin-bottom: 3px;
+  transform: rotate(20deg);
+}
+</style>

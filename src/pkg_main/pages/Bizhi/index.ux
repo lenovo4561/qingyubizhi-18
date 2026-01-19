@@ -12,28 +12,34 @@
       <image class="hot-new-item" src="/pkg_main/assets/img/zuixin.png" onclick="openZuixin"></image>
     </div>
 
-    <!-- 分类区域 -->
-    <div class="category-section">
-      <div
-        class="category-item"
-        for="{{(index, item) in categoryList}}"
-        onclick="selectCategory(index)"
-      >
-        <image class="category-img" src="{{currentCategoryIndex === index ? item.selectedImage : item.unselectedImage}}"></image>
-        <image class="category-name" src="{{currentCategoryIndex === index ? item.selectedNameImage : item.unselectedNameImage}}"></image>
-        <image class="category-decoration" if="{{currentCategoryIndex === index}}" src="/pkg_main/assets/img/wenzi-zhuangshi.png"></image>
-      </div>
-    </div>
-
-    <!-- 壁纸列表 -->
-    <list class="wallpaper-list" columns="2">
-      <list-item
-        class="wallpaper-item"
-        for="{{(index, item) in wallpaperList}}"
-        type="wallpaper"
-      >
-        <div class="wallpaper-card" onclick="openDetail(item)">
-          <image class="wallpaper-image" src="{{item.src}}"></image>
+    <!-- 壁纸列表（包含分类区域） -->
+    <list class="wallpaper-list">
+      <!-- 分类区域作为列表项 -->
+      <list-item type="category" class="category-list-item">
+        <div class="category-section">
+          <div
+            class="category-item"
+            for="{{(index, item) in categoryList}}"
+            onclick="selectCategory(index)"
+          >
+            <image class="category-img" src="{{currentCategoryIndex === index ? item.selectedImage : item.unselectedImage}}"></image>
+            <image class="category-name" src="{{currentCategoryIndex === index ? item.selectedNameImage : item.unselectedNameImage}}"></image>
+            <image class="category-decoration" if="{{currentCategoryIndex === index}}" src="/pkg_main/assets/img/wenzi-zhuangshi.png"></image>
+          </div>
+        </div>
+      </list-item>
+      
+      <!-- 壁纸项目容器 -->
+      <list-item type="wallpaper-container" class="wallpaper-container-item">
+        <div class="wallpaper-grid">
+          <div
+            class="wallpaper-item"
+            for="{{(index, item) in wallpaperList}}"
+          >
+            <div class="wallpaper-card" onclick="openDetail(item)">
+              <image class="wallpaper-image" src="{{item.src}}"></image>
+            </div>
+          </div>
         </div>
       </list-item>
     </list>
@@ -202,13 +208,18 @@ export default {
   resize-mode: contain;
 }
 
+.category-list-item {
+  width: 100%;
+  padding: 0;
+  flex-direction: column;
+}
+
 .category-section {
   flex-direction: row;
   justify-content: space-around;
   padding: 5px 6px;
-  margin-top: -5px;
-  position: relative;
-  z-index: 10;
+  width: 100%;
+  height: auto;
 }
 
 .category-item {
@@ -254,9 +265,23 @@ export default {
   height: 100%;
 }
 
+.wallpaper-container-item {
+  width: 100%;
+  padding: 0;
+}
+
+.wallpaper-grid {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .wallpaper-item {
   flex-direction: column;
+  width: 48%;
   padding: 2px;
+  margin-bottom: 4px;
 }
 
 .wallpaper-card {

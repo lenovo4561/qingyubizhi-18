@@ -1,19 +1,23 @@
 <template>
   <div class="page">
-    <!-- 顶部区域 -->
-    <div class="top-section">
-      <image class="top-bg" src="/pkg_main/assets/img/shouye-bg.png"></image>
-    </div>
-
-    <!-- 热门与最新 -->
-    <div class="hot-new-section">
-      <image class="hot-new-item" onclick="openReMen" src="/pkg_main/assets/img/remen.png"></image>
-      <div style="width: 9px;"></div>
-      <image class="hot-new-item" src="/pkg_main/assets/img/zuixin.png" onclick="openZuixin"></image>
-    </div>
-
-    <!-- 壁纸列表（包含分类区域） -->
+    <!-- 统一滚动列表，包含所有内容 -->
     <list class="wallpaper-list">
+      <!-- 顶部区域作为列表项 -->
+      <list-item type="top" class="top-list-item">
+        <div class="top-section">
+          <image class="top-bg" src="/pkg_main/assets/img/shouye-bg.png"></image>
+        </div>
+      </list-item>
+
+      <!-- 热门与最新作为列表项 -->
+      <list-item type="hot-new" class="hot-new-list-item">
+        <div class="hot-new-section">
+          <image class="hot-new-item" onclick="openReMen" src="/pkg_main/assets/img/remen.png"></image>
+          <div style="width: 9px;"></div>
+          <image class="hot-new-item" src="/pkg_main/assets/img/zuixin.png" onclick="openZuixin"></image>
+        </div>
+      </list-item>
+
       <!-- 分类区域作为列表项 -->
       <list-item type="category" class="category-list-item">
         <div class="category-section">
@@ -179,6 +183,17 @@ export default {
   height: 100%;
 }
 
+.wallpaper-list {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}
+
+.top-list-item {
+  width: 100%;
+  padding: 0;
+}
+
 .top-section {
   flex-direction: column;
   position: relative;
@@ -192,14 +207,17 @@ export default {
   resize-mode: cover;
 }
 
+.hot-new-list-item {
+  width: 100%;
+  padding: 0;
+  margin-top: -30px;
+}
+
 .hot-new-section {
   flex-direction: row;
   justify-content: center;
   padding: 0px 6px;
   width: 100%;
-  margin-top: -30px;
-  position: relative;
-  z-index: 10;
 }
 
 .hot-new-item {
@@ -259,15 +277,9 @@ export default {
   color: #333333;
 }
 
-.wallpaper-list {
-  padding: 0 5px;
-  flex: 1;
-  height: 100%;
-}
-
 .wallpaper-container-item {
   width: 100%;
-  padding: 0;
+  padding: 0 5px;
 }
 
 .wallpaper-grid {

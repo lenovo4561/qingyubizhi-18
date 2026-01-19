@@ -224,16 +224,15 @@ export default {
 
 .tab-bar {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  background-color: #1a1a1a;
+  bottom: 20px;
+  left: 12px;
+  right: 12px;
+  height: 42px;
+  background-color: #000000;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  border-top-width: 1px;
-  border-top-color: #333333;
+  border-radius: 21px;
 }
 
 .tab-item {
@@ -241,17 +240,17 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 100%;
 }
 
 .tab-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   margin-bottom: 2px;
 }
 
 .tab-text {
-  font-size: 10px;
+  font-size: 7px;
   color: #999999;
 }
 </style>

@@ -7,7 +7,7 @@
         <div class="back-area" onclick="goBack">
           <image class="back-icon" src="/pkg_main/assets/img/back.png"></image>
         </div>
-        <image class="title-img" src="/pkg_main/assets/img/paihangicon.png"></image>
+        <image class="title-img" src="/pkg_main/assets/img/zxbz.png"></image>
       </div>
     </div>
 

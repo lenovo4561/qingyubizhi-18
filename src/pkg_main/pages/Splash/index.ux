@@ -86,7 +86,16 @@ export default {
   },
   handleDisagree() {
     console.log('用户点击不同意，退出应用')
-    app.terminate()
+    try {
+      app.terminate()
+    } catch (e) {
+      console.error('退出应用失败:', e)
+      // 如果 terminate 失败，尝试使用 exit
+      const appModule = require('@system.app')
+      if (appModule && appModule.exit) {
+        appModule.exit()
+      }
+    }
   },
   openPrivacy() {
     router.push({
@@ -129,38 +138,40 @@ export default {
 <style>
 .splash-container {
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: #ffffff;
+  position: relative;
 }
 
 .bg-img {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .logo-container {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .logo {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 12px;
+  width: 65px;
+  height: 65px;
+  margin-bottom: 10px;
 }
 
 .logo-text {
-  width: 70px;
-  height: 13px;
+  width: 58px;
+  height: 11px;
 }
 
 /* 弹窗样式 */

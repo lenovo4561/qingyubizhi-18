@@ -9,7 +9,7 @@
     <div class="footer">
       <div class="btn collect-btn" onclick="toggleCollect">
         <image class="btn-text-img" src="/pkg_main/assets/img/sc.png"></image>
-        <image class="btn-icon-img" src="/pkg_main/assets/img/like-s.png"></image>
+        <image class="btn-icon-img" src="{{isCollected ? '/pkg_main/assets/img/like-s.png' : '/pkg_main/assets/img/like-u.png'}}"></image>
       </div>
       <div class="btn download-btn" onclick="downloadImage">
         <image class="btn-text-img" src="/pkg_main/assets/img/xz.png"></image>
